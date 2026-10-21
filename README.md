@@ -28,7 +28,7 @@ Python-Modelle ökonomischer Entscheidungsprobleme treffen hier auf einen leistu
   - [Subgraph-Programm](#subgraph-programm)
   - [Beispiel](#beispiel)
   - [Fehlersuche](#fehlersuche)
-  - [Ausblick: plattformneutrales Laden](#ausblick-plattformneutrales-laden)
+  - [Ausblick: Plattformneutrales Laden](#ausblick-plattformneutrales-laden)
 - [Experimente](#experimente)
 - [Tests](#tests)
 - [Wissenschaftlicher Hintergrund](#wissenschaftlicher-hintergrund)
@@ -36,7 +36,7 @@ Python-Modelle ökonomischer Entscheidungsprobleme treffen hier auf einen leistu
 
 ## Überblick
 
-Die Arbeit untersucht, welche Folgen ein exakter und effizienter SAT-Entscheider für die Wirtschaft hätte. Dieses Repository macht die dort bewiesenen Konstruktionen ausführbar und überprüfbar. Im Zentrum steht nicht nur die Modellierung in Python, sondern die Verbindung dieser Modelle mit dem eigenständigen C++-Projekt [`subgraph-sat-solver`](https://github.com/naphez86/subgraph-sat-solver):
+Die Arbeit untersucht, welche Folgen ein exakter und effizienter SAT-Entscheider für die Wirtschaft hätte. Dieses Repository macht die dort bewiesenen Konstruktionen ausführbar und überprüfbar. Im Zentrum steht nicht nur die Modellierung in Python, sondern die Verbindung dieser Modelle mit dem eigenständigen C++-Projekt [`subgraph-sat-solver`](https://github.com/naphets86/subgraph-sat-solver):
 
 - ein Schaltkreis-Baukasten mit Tseitin-Kodierung, Addierern, Vergleichern und Summierern (`circuits`),
 - das Modell eines wirtschaftlichen Optimierungsproblems sowie die Verfahren „Entscheiden ⇒ Finden" und „Optimieren aus Entscheiden" (`foundation`),
@@ -71,7 +71,7 @@ backend = NativeBackend(NativeLibrary.load(shim_path))                 # laden u
 
 ## Feature: C++-SAT-Solver
 
-Das zentrale Rechen-Backend ist [`subgraph-sat-solver`](https://github.com/naphez86/subgraph-sat-solver): ein eigenständiges C++17-Projekt, das eine CNF-Formel nicht mit einem eingebetteten Python-SAT-Verfahren löst, sondern sie in einer expliziten Reduktionskette an einen Subgraph-Entscheider weitergibt. Die ökonomischen Modelle in diesem Repository erzeugen die SAT-Formeln; die C++-Bibliothek `satlib` und das Programm `SubgraphSATSolver` bilden den leistungsfähigen nativen Solver-Kern.
+Das zentrale Rechen-Backend ist [`subgraph-sat-solver`](https://github.com/naphts86/subgraph-sat-solver): ein eigenständiges C++17-Projekt, das eine CNF-Formel nicht mit einem eingebetteten Python-SAT-Verfahren löst, sondern sie in einer expliziten Reduktionskette an einen Subgraph-Entscheider weitergibt. Die ökonomischen Modelle in diesem Repository erzeugen die SAT-Formeln; die C++-Bibliothek `satlib` und das Programm `SubgraphSATSolver` bilden den leistungsfähigen nativen Solver-Kern.
 
 ### Was der C++-Solver ausführt
 
@@ -82,7 +82,7 @@ Das zentrale Rechen-Backend ist [`subgraph-sat-solver`](https://github.com/naphe
 5. **Den nativen Subgraph-Entscheider aufrufen:** Das externe Programm entscheidet exakt, ob `H` in `G` enthalten ist, und kann ein Mapping zurückgeben.
 6. **Eine SAT-Belegung rekonstruieren und validieren:** Aus dem Mapping gewinnt der Solver eine Belegung und kann sie gegen die ursprüngliche Formel prüfen. Status, Fehler und Phasenlaufzeiten werden im Ergebnis ausgegeben.
 
-`subgraph-sat-solver` stellt sowohl die statische C++-Bibliothek **`satlib`** als auch das Kommandozeilenprogramm **`SubgraphSATSolver`** bereit. Der C++-Solver verwendet dabei das separate Projekt [`csubgraph`](https://github.com/naphez86/csubgraph) als Subgraph-Implementierung. Das sind zwei klar getrennte Rollen: `satlib` orchestriert SAT-Reduktion und Belegungsrekonstruktion; `csubgraph` entscheidet die erzeugte Graphinstanz.
+`subgraph-sat-solver` stellt sowohl die statische C++-Bibliothek **`satlib`** als auch das Kommandozeilenprogramm **`SubgraphSATSolver`** bereit. Der C++-Solver verwendet dabei das separate Projekt [`csubgraph`](https://github.com/naphets86/csubgraph) als Subgraph-Implementierung. Das sind zwei klar getrennte Rollen: `satlib` orchestriert SAT-Reduktion und Belegungsrekonstruktion; `csubgraph` entscheidet die erzeugte Graphinstanz.
 
 Die Reduktionskette beschreibt den Lösungsweg, ist aber kein Beweis für eine polynomielle Laufzeit auf allgemeinen SAT-Instanzen. Laufzeit- und Effizienzaussagen dieser Arbeit gelten nur unter den jeweils genannten Hypothesen; siehe [Wissenschaftlicher Hintergrund](#wissenschaftlicher-hintergrund).
 
@@ -610,9 +610,9 @@ Der Wrapper validiert ein vom nativen Solver geliefertes Modell erneut mit der u
 
 MSVC- und MinGW-Bibliotheken sollten nicht gemischt werden, weil ihre C++-Laufzeiten nicht zusammenpassen.
 
-### Ausblick: plattformneutrales Laden
+### Ausblick: Plattformneutrales Laden
 
-Die oben beschriebenen Plattformunterschiede (Dateiname, Export-Markierung, Suchpfade, Fehlermeldungen) betreffen nicht dieses Projekt allein. Der Vorschlag [A Unified Shared Library Format (`.sl`) with a Standardized Loading Procedure](https://github.com/naphez86/blog/blob/main/unified-shared-library-proposal.md) beschreibt, wie ein einheitliches Format und vor allem ein standardisiertes, betriebssystemunabhängiges Ladeverfahren (eine Suchreihenfolge, ein Fehlermodell, ein Lebenszyklus) diese Teile aus jedem Projekt entfernen könnten.
+Die oben beschriebenen Plattformunterschiede (Dateiname, Export-Markierung, Suchpfade, Fehlermeldungen) betreffen nicht dieses Projekt allein. Der Vorschlag [A Unified Shared Library Format (`.sl`) with a Standardized Loading Procedure](https://github.com/naphets86/sharedlib) beschreibt, wie ein einheitliches Format und vor allem ein standardisiertes, betriebssystemunabhängiges Ladeverfahren (eine Suchreihenfolge, ein Fehlermodell, ein Lebenszyklus) diese Teile aus jedem Projekt entfernen könnten.
 
 Das ist ein Diskussionsvorschlag. In diesem Repository ist er **nicht umgesetzt**; es gilt der in diesem Abschnitt beschriebene Stand mit den Dateien `.dll`, `.so` und `.dylib`.
 
@@ -679,7 +679,7 @@ Die Reduktion von 3-SAT auf das Clique-Problem folgt der klassischen Konstruktio
 
 ## Erwerb
 
-Der Preis für diese Software beträgt 4.945.000,00 EUR.
+Der Preis für diese Software beträgt 14.945.000,00 EUR.
 
 ### Zahlungsinformationen
 
