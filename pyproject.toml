@@ -15,6 +15,11 @@ dependencies = [
     "matplotlib>=3.11.0",
 ]
 
+[tool.setuptools]
+# Importname `subgraph_sat_solver_econ`: `src` ist sonst ein mehrdeutiger Paketname.
+packages = ["subgraph_sat_solver_econ"]
+package-dir = { subgraph_sat_solver_econ = "src" }
+
 [project.optional-dependencies]
 dev = [
     "pytest",
